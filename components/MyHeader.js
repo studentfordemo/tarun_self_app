@@ -14,13 +14,38 @@ export default class MyHeader extends Component{
   }
 
 getNumberOfUnreadNotifications(){
-  db.collection('notifications').where('notificationStatus','==',"Unread")
+  /*db.collection('notifications').where('notificationStatus','==',"Unread")
   .onSnapshot((snapshot)=>{
     var unreadNotifications = snapshot.docs.map((doc) => doc.data())
-    this.setState({
+    if((unreadNotifications.targetedUserId1===this.state.userId)||(unreadNotifications.targetedUserId2===this.state.userId)){
+      if((unreadNotifications.msg!=="Help Me,I am in Location : Shuzenji")&&(unreadNotifications.msg!=="Help Me,I am in Location : undefined")){
+     this.setState({
       value: unreadNotifications.length
     })
-  })
+  }
+}
+  })*/
+  this.notificationRef = db.collection("notifications")
+    .where("notificationStatus", "==", "Unread")
+    //.where("targetedUserId1"||"targetUserId2",'==',this.state.userId)
+    //.where("targetedUserId2",'==',this.state.userId)
+    //.where("msg","<>","Help Me,I am in Location : Shuzenji")
+    .onSnapshot((snapshot)=>{
+      var allNotifications =  []
+      snapshot.docs.map((doc) =>{
+        var notification = doc.data()
+        notification["doc_id"] = doc.id
+        if((notification.targetedUserId1===this.state.userId)||(notification.targetedUserId2===this.state.userId)){
+        if((notification.msg!=="Help Me,I am in Location : Shuzenji")&&(notification.msg!=="Help Me,I am in Location : undefined")){
+        allNotifications.push(notification)
+        }
+      }
+      });
+      
+      this.setState({
+          value : allNotifications.length
+      });
+    })
 }
 
 componentDidMount(){
