@@ -13,7 +13,7 @@ import {
   Button} from 'react-native';
 import db from '../config';
 import firebase from 'firebase';
-import MyHeader from '../components/MyHeader';
+import MyHeader from './MyHeader';
 
 export default class Location extends Component{
     constructor(){
