@@ -1,23 +1,13 @@
 import React,{Component}from 'react';
-import {
-    View,
-    Text,
-    TextInput,
-    Modal,
-    KeyboardAvoidingView,
-    StyleSheet,
-    TouchableOpacity,
-    Alert,
-    ScrollView,
-  Image,Linking,Platform,
-  Button} from 'react-native';
+import {View,Text,TextInput,Modal,KeyboardAvoidingView,StyleSheet,TouchableOpacity,
+  Alert,ScrollView,Image,Linking,Platform,Button} from 'react-native';
 import db from '../config';
 import firebase from 'firebase';
-import MyHeader from './MyHeader';
+import MyHeader from "./MyHeader"
 
 export default class Location extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state={
             longitude:"",
             lattitude:"",
@@ -64,39 +54,46 @@ Weather=async()=>{
       db.collection("relatives").where("senderEmail" ,"==",this.state.userId).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-        var data = doc.data()
+        var data = doc.data() 
         this.setState({
-            contact1:data.contact_firstrelative,
-            contact2:data.contact_secondrelative
+            contact1:data.contact_1,
+            contact2:data.contact_2
         })
        
         db.collection("notifications").add({
-            msg:"Help Me,I am in Location"+" : "+this.state.weather.name,
+            msg:"Help Me,I am in Location"+"  "+this.state.weather.name,
             notificationStatus:"Unread",
             date:firebase.firestore.FieldValue.serverTimestamp(),
-            targetedUserId1:data.email_id_firstrelative,
-            targetedUserId2:data.email_id_secondrelative,
+            targetedUserId1:data.email_Id1,
+            targetedUserId2:data.email_Id2,
             senderId:data.senderEmail
         })
         });
       })
   }
- dialCall = (number) => {
-    let phoneNumber = '';
-    if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
-    else {phoneNumber = `telprompt:${number}`; }
-    Linking.openURL(phoneNumber);
- };
+  dialCall = (number) => { let phoneNumber = '';
+
+   if (Platform.OS === 'android') {
+
+      phoneNumber = `tel:${number}`; 
+    } 
+  else {
+
+    phoneNumber = `telprompt:${number}`;
+
+   }
+   Linking.openURL(phoneNumber); };
 render(){
     return(
-        <View style={{marginTop:100}}>
-          <MyHeader title="Find Out My Location" navigation ={this.props.navigation}/>
+        <View style={{marginTop:50}}>
+           <MyHeader title="location" navigation ={this.props.navigation}/>
+          
           <Text>
-              {this.state.lattitude}
-          </Text>
-          <Text>
+    {this.state.lattitude}
+</Text>
+           <Text>
                {this.state.longitude}
-          </Text>
+           </Text>
            <Button 
            title="Get My Location"
            onPress={()=>{
@@ -104,51 +101,30 @@ render(){
                 this.addNotification()
             }}
            />
-          <Text>
+           <Text>
                {this.state.weather.name}
            </Text>
-           <TouchableOpacity
-                   style={{
-                   height: 30,
-                   width: 200,
-                   backgroundColor: "#329df4",
-                   alignItems: "center",
-                   justifyContent: "center",
-                   borderRadius: 5,
-                   marginTop:100,
-                   marginLeft:100
-                   }}
-                 onPress={()=>{this.dialCall(this.state.contact1)}}
-                >
-                <Text>Make a Phone Call To My First Relative </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                   style={{
-                   height: 30,
-                   width: 200,
-                   backgroundColor: "#329df4",
-                   alignItems: "center",
-                   justifyContent: "center",
-                   borderRadius: 5,
-                   marginTop:100,
-                   marginLeft:100
-                   }}
-                 onPress={()=>{this.dialCall(this.state.contact2)}}
-                >
-                <Text>Make a Phone Call To My second Relative </Text>
-                </TouchableOpacity>
+
+          <TouchableOpacity style={{alignItems:"center",height:30,width:200,marginTop:50,marginLeft:150,borderRadius:10,backgroundColor:"red"}}
+          onPress={()=>{
+            this.dialCall(this.state.contact1)
+        }}>
+<Text>
+  Call 1St Relative
+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{alignItems:"center",height:30,width:200,marginTop:50,marginLeft:150,borderRadius:10,backgroundColor:"red"}}
+          onPress={()=>{
+            this.dialCall(this.state.contact2)
+        }}>
+<Text>
+  Call 2nd Relative
+</Text>
+          </TouchableOpacity> 
+      
+           
         </View>
     )
 }
 
 }
-const styles = StyleSheet.create({
-  
-  textInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: '100%',
-    paddingHorizontal: 10,
-  },
-});

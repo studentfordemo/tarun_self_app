@@ -45,8 +45,7 @@ export default class WelcomeScreen extends Component{
          contact:this.state.contact,
          email_id:this.state.emailId,
          address:this.state.address,
-        caretaker1:this.state.caretaker1,
-        caretaker2:this.state.caretaker2,
+       
         defaultloc:this.state.defaultloc
        })
        return  alert(
@@ -69,7 +68,7 @@ export default class WelcomeScreen extends Component{
 userLogin = (emailId, password)=>{
    firebase.auth().signInWithEmailAndPassword(emailId, password)
    .then(()=>{
-     this.props.navigation.navigate('Relatives')
+     this.props.navigation.navigate('RelativeDetailsScreen')
    })
    .catch((error)=> {
      var errorCode = error.code;
@@ -143,10 +142,7 @@ showModal = ()=>{
             })
           }}
         />
-         
-  
-
-        <TextInput
+            <TextInput
           style={styles.formTextInput}
           placeholder ={"Email"}
           keyboardType ={'email-address'}
@@ -213,10 +209,7 @@ showModal = ()=>{
           <Text style={styles.title}> Tarun </Text>
         </View>
         <View> 
-          <Image
-          //source = {require("../assets/santa2.png")}
-          //style={{width:200,height:200}}
-          /> 
+         
 
 
             <TextInput

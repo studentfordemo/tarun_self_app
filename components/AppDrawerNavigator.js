@@ -1,31 +1,28 @@
 import React from 'react';
 import {createDrawerNavigator} from 'react-navigation-drawer';
-import CustomSideBarMenu from './CustomSideBarMenu';
+import CustomSideBarMenu  from './CustomSideBarMenu';
 import NotificationScreen from '../screens/NotificationScreen';
-import {Icon} from 'react-native-elements';
 import Location from "./location"
- export const AppDrawerNavigator = createDrawerNavigator({
-     Home : {
-      screen:Location,
-         navigationOptions : {
-             drawerIcon : <Icon
-             name="home"
-             />
-         }
-     },
-     
-     Notifications : {
-         screen : NotificationScreen,
-         navigationOptions : {
-            drawerIcon : <Icon
-            name="bell" type="font-awesome"
-            />
-           }
+import {Icon} from 'react-native-elements';
+import {AppTabNavigator} from "./AppTabNavigator"
+export const AppDrawerNavigator = createDrawerNavigator({
+  Home : {
+    screen : AppTabNavigator,
+    navigationOptions:{
+      drawerIcon : <Icon name="home" type ="fontawesome5" />
+    }
     },
-},
-    {
-        contentComponent : CustomSideBarMenu
-    },
-    { 
-        initialRouteName : "Home"
- })
+   Notification : {
+    screen : NotificationScreen,
+    navigationOptions:{
+      drawerIcon : <Icon name="bell" type ="font-awesome" />,
+      drawerLabel : "Notifications"
+    }
+  },
+ },
+  {
+    contentComponent:CustomSideBarMenu
+  },
+  {
+    initialRouteName : 'Home'
+  })
